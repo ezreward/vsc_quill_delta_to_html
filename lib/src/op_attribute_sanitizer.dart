@@ -7,6 +7,8 @@ import 'package:vsc_quill_delta_to_html/src/value_types.dart';
 import 'helpers/js.dart';
 import 'op_link_sanitizer.dart';
 
+typedef FilterFunc<T> = bool Function(T, dynamic);
+
 class OpAttributes {
   OpAttributes({
     String background,
@@ -101,20 +103,24 @@ class OpAttributes {
   set strike(bool v) =>
       v == null ? attrs.remove('strike') : attrs['strike'] = v;
 
-  T _getEnum<T extends EnumValueType>(List<T> values, String attrName) {
+  T _getEnum<T>(List<T> values, FilterFunc<T> filterFunc, String attrName) {
     final v = attrs[attrName];
     if (v == null) return null;
-    return values.firstWhereOrNull((t) => t.value == v);
+    return values.firstWhereOrNull(
+      (value) => filterFunc(value, v),
+    );
   }
 
-  ScriptType get script => _getEnum(ScriptType.values, 'script');
+  ScriptType get script => _getEnum(
+      ScriptType.values, (ScriptType t, dynamic v) => t.value == v, 'script');
   set script(ScriptType v) =>
       v == null ? attrs.remove('script') : attrs['script'] = v.value;
 
   bool get code => attrs['code'];
   set code(bool v) => v == null ? attrs.remove('code') : attrs['code'] = v;
 
-  ListType get list => _getEnum(ListType.values, 'list');
+  ListType get list => _getEnum(
+      ListType.values, (ListType t, dynamic v) => t.value == v, 'list');
   set list(ListType v) =>
       v == null ? attrs.remove('list') : attrs['list'] = v.value;
 
@@ -131,11 +137,13 @@ class OpAttributes {
   num get header => _getNumber('header');
   set header(num v) => v == null ? attrs.remove('header') : attrs['header'] = v;
 
-  AlignType get align => _getEnum(AlignType.values, 'align');
+  AlignType get align => _getEnum(
+      AlignType.values, (AlignType t, dynamic v) => t.value == v, 'align');
   set align(AlignType v) =>
       v == null ? attrs.remove('align') : attrs['align'] = v.value;
 
-  DirectionType get direction => _getEnum(DirectionType.values, 'direction');
+  DirectionType get direction => _getEnum(DirectionType.values,
+      (DirectionType t, dynamic v) => t.value == v, 'direction');
   set direction(DirectionType v) =>
       v == null ? attrs.remove('direction') : attrs['direction'] = v.value;
 

@@ -114,10 +114,10 @@ class OpToHtmlConverter {
 
   @visibleForTesting
   String prefixClass(String className) {
-    if (!isTruthy(options.classPrefix)) {
+    if (!isTruthy(options?.classPrefix)) {
       return className;
     }
-    return '${options.classPrefix}-$className';
+    return '${options?.classPrefix}-$className';
   }
 
   String getHtml() {
@@ -173,11 +173,11 @@ class OpToHtmlConverter {
 
     var content = op.isFormula() || op.isText() ? op.insert.value : '';
 
-    return options.encodeHtml == true ? encodeHtml(content) : content;
+    return options?.encodeHtml == true ? encodeHtml(content) : content;
   }
 
   bool _supportInlineStyles() =>
-      options.inlineStylesFlag == true || options.inlineStyles != null;
+      options?.inlineStylesFlag == true || options?.inlineStyles != null;
 
   List<String> getCssClasses() {
     var attrs = op.attributes;
@@ -187,7 +187,7 @@ class OpToHtmlConverter {
     }
 
     var propsArr = ['indent', 'align', 'direction', 'font', 'size'];
-    if (options.allowBackgroundClasses == true) {
+    if (options?.allowBackgroundClasses == true) {
       propsArr.add('background');
     }
 
@@ -216,7 +216,7 @@ class OpToHtmlConverter {
       ['color']
     ];
     final inlineStyles = _supportInlineStyles();
-    if (inlineStyles || options.allowBackgroundClasses != true) {
+    if (inlineStyles || options?.allowBackgroundClasses != true) {
       propsArr.add(['background', 'background-color']);
     }
     if (inlineStyles) {
@@ -265,9 +265,9 @@ class OpToHtmlConverter {
     }
 
     final customTagAttributes = getCustomTagAttributes();
-    final customAttr = customTagAttributes.entries
-            .map((entry) => makeAttr(entry.key, entry.value))
-            .toList() ??
+    final customAttr = customTagAttributes?.entries
+            ?.map((entry) => makeAttr(entry.key, entry.value))
+            ?.toList() ??
         [];
     final classes = getCssClasses();
     final tagAttrs = customAttr;
@@ -344,11 +344,11 @@ class OpToHtmlConverter {
 
   List<TagKeyValue> getLinkAttrs() {
     final targetForAll =
-        OpAttributeSanitizer.isValidTarget(options.linkTarget ?? '')
+        OpAttributeSanitizer.isValidTarget(options?.linkTarget ?? '')
             ? options.linkTarget
             : null;
 
-    final relForAll = OpAttributeSanitizer.isValidRel(options.linkRel ?? '')
+    final relForAll = OpAttributeSanitizer.isValidRel(options?.linkRel ?? '')
         ? options.linkRel
         : null;
 
@@ -361,16 +361,16 @@ class OpToHtmlConverter {
     return tagAttrs;
   }
 
-  String getCustomTag(String format) => options.customTag?.call(format, op);
+  String getCustomTag(String format) => options?.customTag?.call(format, op);
 
   Map<String, String> getCustomTagAttributes() =>
-      options.customTagAttributes?.call(op);
+      options?.customTagAttributes?.call(op);
 
-  List<String> getCustomCssClasses() => options.customCssClasses?.call(op);
+  List<String> getCustomCssClasses() => options?.customCssClasses?.call(op);
 
-  List<String> getCustomCssStyles() => options.customCssStyles?.call(op);
+  List<String> getCustomCssStyles() => options?.customCssStyles?.call(op);
 
-  List<String> getTags() {
+  List<dynamic> getTags() {
     final attrs = op.attributes;
 
     // embeds
@@ -385,11 +385,11 @@ class OpToHtmlConverter {
     }
 
     // blocks
-    final positionTag = options.paragraphTag;
+    final positionTag = options?.paragraphTag;
     final blocks = [
       ['blockquote'],
       ['code-block', 'pre'],
-      ['list', options.listItemTag],
+      ['list', options?.listItemTag],
       ['header'],
       ['align', positionTag],
       ['direction', positionTag],

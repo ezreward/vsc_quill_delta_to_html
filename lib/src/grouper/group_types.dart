@@ -77,7 +77,7 @@ class BlockGroup implements TDataGroup {
 class ListGroup implements TDataGroup {
   ListGroup(this.items);
 
-  List<ListItem> items;
+  List<dynamic> items;
 
   @override
   bool operator ==(Object other) =>

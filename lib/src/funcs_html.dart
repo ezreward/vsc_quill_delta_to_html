@@ -52,7 +52,7 @@ String makeStartTag(String tag, [List<TagKeyValue> attrs]) {
 }
 
 String makeEndTag([String tag = '']) {
-  return tag.isNotEmpty ? '</$tag>' : '';
+  return tag?.isNotEmpty == true ? '</$tag>' : '';
 }
 
 String decodeHtml(String str) {
