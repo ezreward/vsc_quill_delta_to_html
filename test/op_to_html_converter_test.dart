@@ -379,7 +379,7 @@ void main() {
           customTagAttributes: (op) {
             if (isTruthy(op.attributes.color)) {
               return {
-                'data-color': op.attributes.color!,
+                'data-color': op.attributes.color,
               };
             }
             return null;

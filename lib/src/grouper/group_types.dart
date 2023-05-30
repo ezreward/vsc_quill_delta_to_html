@@ -44,11 +44,11 @@ class SingleItem {
 }
 
 class VideoItem extends SingleItem implements TDataGroup {
-  VideoItem(super.op);
+  VideoItem(DeltaInsertOp op) : super(op);
 }
 
 class BlotBlock extends SingleItem implements TDataGroup {
-  BlotBlock(super.op);
+  BlotBlock(DeltaInsertOp op) : super(op);
 }
 
 class BlockGroup implements TDataGroup {
@@ -99,7 +99,7 @@ class ListItem implements TDataGroup {
   ListItem(this.item, [this.innerList]);
 
   final BlockGroup item;
-  ListGroup? innerList;
+  ListGroup innerList;
 
   @override
   bool operator ==(Object other) =>

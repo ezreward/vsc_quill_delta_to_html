@@ -69,7 +69,7 @@ class ListNester {
     final indentLevels = indentGroups.keys.toList();
     indentLevels.sort();
     for (final indent in indentLevels.reversed) {
-      for (final lg in indentGroups[indent]!) {
+      for (final lg in indentGroups[indent]) {
         final idx = sectionItems.indexOf(lg);
         if (_placeUnderParent(lg, sectionItems.sublist(0, idx))) {
           sectionItems.removeAt(idx);
@@ -85,7 +85,7 @@ class ListNester {
       final indent = cv.items[0].item.op.attributes.indent;
       if (indent != null) {
         pv[indent] = pv[indent] ?? [];
-        pv[indent]!.add(cv);
+        pv[indent].add(cv);
       }
       return pv;
     });
@@ -97,7 +97,7 @@ class ListNester {
       if (target.items[0].item.op.hasHigherIndentThan(elm.items[0].item.op)) {
         var parent = elm.items[elm.items.length - 1];
         if (parent.innerList != null) {
-          parent.innerList!.items.addAll(target.items);
+          parent.innerList.items.addAll(target.items);
         } else {
           parent.innerList = target;
         }

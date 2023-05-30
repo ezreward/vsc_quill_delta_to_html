@@ -606,7 +606,7 @@ void main() {
           },
         ];
 
-        String renderer(DeltaInsertOp op, DeltaInsertOp? _) {
+        String renderer(DeltaInsertOp op, DeltaInsertOp _) {
           if (op.insert.type == 'colonizer') {
             return op.insert.value;
           }
@@ -657,7 +657,7 @@ void main() {
           },
         ];
 
-        String renderer(DeltaInsertOp op, DeltaInsertOp? _) {
+        String renderer(DeltaInsertOp op, DeltaInsertOp _) {
           if (op.insert.type == 'colonizer') {
             return op.insert.value;
           }
@@ -1157,8 +1157,8 @@ void main() {
             {'insert': 'aa'},
           ]);
 
-          String? dummyBefore(GroupType g, TDataGroup d) => '<fake/>';
-          String? dummyAfter(GroupType g, String html) => '';
+          String dummyBefore(GroupType g, TDataGroup d) => '<fake/>';
+          String dummyAfter(GroupType g, String html) => '';
 
           var v = c.convert();
           expect(

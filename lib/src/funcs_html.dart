@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:html_unescape/html_unescape_small.dart';
+import 'package:meta/meta.dart';
 
 class TagKeyValue {
-  TagKeyValue({required this.key, this.value});
+  TagKeyValue({@required this.key, this.value});
 
   String key;
-  String? value;
+  String value;
 
   @override
   bool operator ==(Object other) =>
@@ -30,7 +31,7 @@ enum EncodeTarget {
   url,
 }
 
-String makeStartTag(String? tag, [List<TagKeyValue>? attrs]) {
+String makeStartTag(String tag, [List<TagKeyValue> attrs]) {
   if (tag == null || tag.isEmpty) {
     return '';
   }
@@ -72,7 +73,6 @@ String encodeHtml(String str, [bool preventDoubleEncoding = true]) {
 }
 
 String encodeLink(String str) {
-  // TODO Decode first? Conditionally?
   return HtmlEscape(HtmlEscapeMode(
     escapeApos: true,
     escapeLtGt: true,

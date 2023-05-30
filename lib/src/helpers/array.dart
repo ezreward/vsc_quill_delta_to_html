@@ -7,7 +7,7 @@ class ArraySlice<T> {
   List<T> elements;
 }
 
-T? preferSecond<T>(List<T> arr) {
+T preferSecond<T>(List<T> arr) {
   if (arr.isEmpty) {
     return null;
   }

@@ -7,7 +7,7 @@ import 'value_types.dart';
 
 class DeltaInsertOp {
   DeltaInsertOp(Object /*InsertData | string*/ insertVal,
-      [OpAttributes? attrs]) {
+      [OpAttributes attrs]) {
     if (insertVal is String) {
       insertVal = InsertDataQuill(DataType.text, insertVal);
     }
@@ -16,8 +16,8 @@ class DeltaInsertOp {
     attributes = attrs ?? OpAttributes();
   }
 
-  late final InsertData insert;
-  late final OpAttributes attributes;
+  InsertData insert;
+  OpAttributes attributes;
 
   static createNewLineOp() {
     return DeltaInsertOp(newLine);

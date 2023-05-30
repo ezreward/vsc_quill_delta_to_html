@@ -6,28 +6,28 @@ import 'package:vsc_quill_delta_to_html/src/op_link_sanitizer.dart';
 class Mention {
   Mention();
 
-  final Map<String, String?> attrs = {};
+  final Map<String, String> attrs = {};
 
-  String? get name => attrs['name'];
-  set name(String? v) => attrs['name'] = v;
+  String get name => attrs['name'];
+  set name(String v) => attrs['name'] = v;
 
-  String? get target => attrs['target'];
-  set target(String? v) => attrs['target'] = v;
+  String get target => attrs['target'];
+  set target(String v) => attrs['target'] = v;
 
-  String? get slug => attrs['slug'];
-  set slug(String? v) => attrs['slug'] = v;
+  String get slug => attrs['slug'];
+  set slug(String v) => attrs['slug'] = v;
 
-  String? get class_ => attrs['class'];
-  set class_(String? v) => attrs['class'] = v;
+  String get class_ => attrs['class'];
+  set class_(String v) => attrs['class'] = v;
 
-  String? get avatar => attrs['avatar'];
-  set avatar(String? v) => attrs['avatar'] = v;
+  String get avatar => attrs['avatar'];
+  set avatar(String v) => attrs['avatar'] = v;
 
-  String? get id => attrs['id'];
-  set id(String? v) => attrs['id'] = v;
+  String get id => attrs['id'];
+  set id(String v) => attrs['id'] = v;
 
-  String? get endPoint => attrs['end-point'];
-  set endPoint(String? v) => attrs['end-point'] = v;
+  String get endPoint => attrs['end-point'];
+  set endPoint(String v) => attrs['end-point'] = v;
 
   @override
   bool operator ==(Object other) =>
@@ -51,11 +51,11 @@ class MentionSanitizer {
     final cleanObj = Mention();
 
     if (isTruthy(dirtyObj.class_) &&
-        MentionSanitizer.isValidClass(dirtyObj.class_!)) {
+        MentionSanitizer.isValidClass(dirtyObj.class_)) {
       cleanObj.class_ = dirtyObj.class_;
     }
 
-    if (isTruthy(dirtyObj.id) && MentionSanitizer.isValidId(dirtyObj.id!)) {
+    if (isTruthy(dirtyObj.id) && MentionSanitizer.isValidId(dirtyObj.id)) {
       cleanObj.id = dirtyObj.id;
     }
 

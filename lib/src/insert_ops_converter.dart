@@ -11,7 +11,7 @@ import 'value_types.dart';
 /// Converts raw delta insert ops to array of denormalized DeltaInsertOp objects.
 class InsertOpsConverter {
   static List<DeltaInsertOp> convert(
-    List<Map<String, dynamic>>? deltaOps,
+    List<Map<String, dynamic>> deltaOps,
     OpAttributeSanitizerOptions options,
   ) {
     if (deltaOps == null) {
@@ -46,7 +46,7 @@ class InsertOpsConverter {
     return results;
   }
 
-  static InsertData? convertInsertVal(
+  static InsertData convertInsertVal(
       dynamic insertPropVal, OpAttributeSanitizerOptions sanitizeOptions) {
     if (insertPropVal is String) {
       return InsertDataQuill(DataType.text, insertPropVal);

@@ -10,8 +10,8 @@ import 'value_types.dart';
 class InlineStyleType {
   InlineStyleType({this.fn, this.map});
 
-  final String? Function(String value, DeltaInsertOp op)? fn;
-  final Map<String, String>? map;
+  final String Function(String value, DeltaInsertOp op) fn;
+  final Map<String, String> map;
 }
 
 class InlineStyles {
@@ -19,7 +19,7 @@ class InlineStyles {
 
   final Map<String, InlineStyleType> attrs;
 
-  InlineStyleType? operator [](String key) => attrs[key];
+  InlineStyleType operator [](String key) => attrs[key];
 }
 
 const Map<String, String> defaultInlineFonts = {
@@ -77,25 +77,25 @@ class OpConverterOptions {
   }
 
   String classPrefix;
-  bool? inlineStylesFlag;
-  InlineStyles? inlineStyles;
+  bool inlineStylesFlag;
+  InlineStyles inlineStyles;
   bool encodeHtml;
   String listItemTag;
   String paragraphTag;
-  String? linkRel;
-  String? linkTarget;
-  bool? allowBackgroundClasses;
-  String? Function(String format, DeltaInsertOp op)? customTag;
-  Map<String, String>? Function(DeltaInsertOp op)? customTagAttributes;
-  List<String>? Function(DeltaInsertOp op)? customCssClasses;
-  List<String>? Function(DeltaInsertOp op)? customCssStyles;
+  String linkRel;
+  String linkTarget;
+  bool allowBackgroundClasses;
+  String Function(String format, DeltaInsertOp op) customTag;
+  Map<String, String> Function(DeltaInsertOp op) customTagAttributes;
+  List<String> Function(DeltaInsertOp op) customCssClasses;
+  List<String> Function(DeltaInsertOp op) customCssStyles;
 }
 
 class HtmlParts {
   HtmlParts({
-    required this.openingTag,
-    required this.content,
-    required this.closingTag,
+    @required this.openingTag,
+    @required this.content,
+    @required this.closingTag,
   });
 
   final String openingTag;
@@ -105,12 +105,12 @@ class HtmlParts {
 
 /// Converts a single Delta op to HTML.
 class OpToHtmlConverter {
-  OpToHtmlConverter(this.op, [OpConverterOptions? options]) {
-    this.options = options ?? OpConverterOptions();
+  OpToHtmlConverter(this.op, [OpConverterOptions options]) {
+    options = options ?? OpConverterOptions();
   }
 
-  late final OpConverterOptions options;
-  final DeltaInsertOp op;
+  OpConverterOptions options;
+  DeltaInsertOp op;
 
   @visibleForTesting
   String prefixClass(String className) {
@@ -237,20 +237,20 @@ class OpToHtmlConverter {
           final attrValue = attrs[attribute];
 
           final attributeConverter = (_supportInlineStyles()
-                  ? (options.inlineStyles?[attribute])
+                  ? (options.inlineStyles[attribute])
                   : null) ??
               defaultInlineStyles[attribute];
 
           if (attributeConverter?.map != null) {
-            return attributeConverter!.map![attrValue];
+            return attributeConverter.map[attrValue];
           } else if (attributeConverter?.fn != null) {
-            return attributeConverter!.fn!(attrValue.toString(), op);
+            return attributeConverter.fn(attrValue.toString(), op);
           } else {
             return '${arr.preferSecond(item)}:$attrValue';
           }
         })
         .where((item) => item != null)
-        .map((item) => item!)
+        .map((item) => item)
         .toList();
 
     final customCssStyles = getCustomCssStyles();
@@ -265,7 +265,7 @@ class OpToHtmlConverter {
     }
 
     final customTagAttributes = getCustomTagAttributes();
-    final customAttr = customTagAttributes?.entries
+    final customAttr = customTagAttributes.entries
             .map((entry) => makeAttr(entry.key, entry.value))
             .toList() ??
         [];
@@ -282,7 +282,7 @@ class OpToHtmlConverter {
 
     if (op.isImage()) {
       if (isTruthy(op.attributes.width)) {
-        tagAttrs.add(makeAttr('width', op.attributes.width!));
+        tagAttrs.add(makeAttr('width', op.attributes.width));
       }
       tagAttrs.add(makeAttr('src', op.insert.value));
       return tagAttrs;
@@ -308,18 +308,18 @@ class OpToHtmlConverter {
     }
 
     if (op.isMentions()) {
-      final mention = op.attributes.mention!;
+      final mention = op.attributes.mention;
       if (isTruthy(mention.class_)) {
-        tagAttrs.add(makeAttr('class', mention.class_!));
+        tagAttrs.add(makeAttr('class', mention.class_));
       }
       if (isTruthy(mention.endPoint) && isTruthy(mention.slug)) {
-        tagAttrs.add(makeAttr('href', '${mention.endPoint!}/${mention.slug!}'));
+        tagAttrs.add(makeAttr('href', '${mention.endPoint}/${mention.slug}'));
       } else {
         tagAttrs.add(makeAttr('href', 'about:blank'));
       }
 
       if (isTruthy(mention.target)) {
-        tagAttrs.add(makeAttr('target', mention.target!));
+        tagAttrs.add(makeAttr('target', mention.target));
       }
       return tagAttrs;
     }
@@ -355,20 +355,20 @@ class OpToHtmlConverter {
     final target = op.attributes.target ?? targetForAll;
     final rel = op.attributes.rel ?? relForAll;
 
-    final tagAttrs = [makeAttr('href', op.attributes.link!)];
-    if (isTruthy(target)) tagAttrs.add(makeAttr('target', target!));
-    if (isTruthy(rel)) tagAttrs.add(makeAttr('rel', rel!));
+    final tagAttrs = [makeAttr('href', op.attributes.link)];
+    if (isTruthy(target)) tagAttrs.add(makeAttr('target', target));
+    if (isTruthy(rel)) tagAttrs.add(makeAttr('rel', rel));
     return tagAttrs;
   }
 
-  String? getCustomTag(String format) => options.customTag?.call(format, op);
+  String getCustomTag(String format) => options.customTag?.call(format, op);
 
-  Map<String, String>? getCustomTagAttributes() =>
+  Map<String, String> getCustomTagAttributes() =>
       options.customTagAttributes?.call(op);
 
-  List<String>? getCustomCssClasses() => options.customCssClasses?.call(op);
+  List<String> getCustomCssClasses() => options.customCssClasses?.call(op);
 
-  List<String>? getCustomCssStyles() => options.customCssStyles?.call(op);
+  List<String> getCustomCssStyles() => options.customCssStyles?.call(op);
 
   List<String> getTags() {
     final attrs = op.attributes;
@@ -400,23 +400,23 @@ class OpToHtmlConverter {
       if (isTruthy(attrs[firstItem])) {
         final customTag = getCustomTag(firstItem);
         return isTruthy(customTag)
-            ? [customTag!]
+            ? [customTag]
             : firstItem == 'header'
                 ? ['h${attrs[firstItem]}']
-                : [arr.preferSecond(item)!];
+                : [arr.preferSecond(item)];
       }
     }
 
     if (op.isCustomTextBlock()) {
       final customTag = getCustomTag('renderAsBlock');
-      return isTruthy(customTag) ? [customTag!] : [positionTag];
+      return isTruthy(customTag) ? [customTag] : [positionTag];
     }
 
     // inlines
     final customTagsMap = attrs.attrs.keys.fold(<String, String>{}, (res, it) {
       final customTag = getCustomTag(it);
       if (isTruthy(customTag)) {
-        res[it] = customTag!;
+        res[it] = customTag;
       }
       return res;
     });
@@ -436,17 +436,17 @@ class OpToHtmlConverter {
       ...inlineTags.where((item) => isTruthy(attrs[item[0]])).toList(),
       ...customTagsMap.keys
           .where((t) => !inlineTags.any((it) => it[0] == t))
-          .map((t) => [t, customTagsMap[t]!]),
+          .map((t) => [t, customTagsMap[t]]),
     ];
     return tl.map((item) {
       final v = customTagsMap[item[0]];
       return isTruthy(v)
-          ? v!
+          ? v
           : item[0] == 'script'
               ? attrs[item[0]] == ScriptType.subscript.value
                   ? 'sub'
                   : 'sup'
-              : arr.preferSecond(item)!;
+              : arr.preferSecond(item);
     }).toList();
   }
 }

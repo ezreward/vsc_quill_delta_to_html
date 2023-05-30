@@ -21,8 +21,8 @@ class ConverterOptions {
     this.multiLineCodeblock,
     this.multiLineParagraph,
     this.multiLineCustomBlock,
-    OpAttributeSanitizerOptions? sanitizerOptions,
-    OpConverterOptions? converterOptions,
+    OpAttributeSanitizerOptions sanitizerOptions,
+    OpConverterOptions converterOptions,
   }) {
     this.sanitizerOptions = sanitizerOptions ?? OpAttributeSanitizerOptions();
     this.converterOptions = converterOptions ?? OpConverterOptions();
@@ -56,15 +56,15 @@ class ConverterOptions {
     multiLineCustomBlock ??= true;
   }
 
-  String? orderedListTag;
-  String? bulletListTag;
-  bool? multiLineBlockquote;
-  bool? multiLineHeader;
-  bool? multiLineCodeblock;
-  bool? multiLineParagraph;
-  bool? multiLineCustomBlock;
-  late OpAttributeSanitizerOptions sanitizerOptions;
-  late OpConverterOptions converterOptions;
+  String orderedListTag;
+  String bulletListTag;
+  bool multiLineBlockquote;
+  bool multiLineHeader;
+  bool multiLineCodeblock;
+  bool multiLineParagraph;
+  bool multiLineCustomBlock;
+  OpAttributeSanitizerOptions sanitizerOptions;
+  OpConverterOptions converterOptions;
 }
 
 const brTag = '<br/>';
@@ -81,32 +81,31 @@ const brTag = '<br/>';
 ///
 /// Documentation can be found [here](https://github.com/VisualSystemsCorp/vsc_quill_delta_to_html).
 class QuillDeltaToHtmlConverter {
-  QuillDeltaToHtmlConverter(this._rawDeltaOps, [ConverterOptions? options]) {
+  QuillDeltaToHtmlConverter(this._rawDeltaOps, [ConverterOptions options]) {
     _options = options ?? ConverterOptions();
     _converterOptions = _options.converterOptions;
     _converterOptions.linkTarget ??= '_blank';
   }
 
-  late ConverterOptions _options;
+  ConverterOptions _options;
   final List<Map<String, dynamic>> _rawDeltaOps;
-  late OpConverterOptions _converterOptions;
+  OpConverterOptions _converterOptions;
 
   // render callbacks
-  String? Function(GroupType groupType, TDataGroup data)? _beforeRenderCallback;
+  String Function(GroupType groupType, TDataGroup data) _beforeRenderCallback;
   set beforeRender(
-          String? Function(GroupType groupType, TDataGroup data)? callback) =>
+          String Function(GroupType groupType, TDataGroup data) callback) =>
       _beforeRenderCallback = callback;
 
-  String? Function(GroupType groupType, String htmlString)?
-      _afterRenderCallback;
+  String Function(GroupType groupType, String htmlString) _afterRenderCallback;
   set afterRender(
-          String? Function(GroupType groupType, String htmlString)? callback) =>
+          String Function(GroupType groupType, String htmlString) callback) =>
       _afterRenderCallback = callback;
 
-  String Function(DeltaInsertOp customOp, DeltaInsertOp? contextOp)?
+  String Function(DeltaInsertOp customOp, DeltaInsertOp contextOp)
       _renderCustomWithCallback;
   set renderCustomWith(
-          String Function(DeltaInsertOp customOp, DeltaInsertOp? contextOp)?
+          String Function(DeltaInsertOp customOp, DeltaInsertOp contextOp)
               callback) =>
       _renderCustomWithCallback = callback;
 
@@ -204,7 +203,7 @@ class QuillDeltaToHtmlConverter {
     final liElementsHtml = renderInlines(li.item.ops, false);
     return parts.openingTag +
         liElementsHtml +
-        (li.innerList != null ? _renderList(li.innerList!) : '') +
+        (li.innerList != null ? _renderList(li.innerList) : '') +
         parts.closingTag;
   }
 
@@ -286,7 +285,7 @@ class QuillDeltaToHtmlConverter {
         endParaTag;
   }
 
-  String _renderInline(DeltaInsertOp op, DeltaInsertOp? contextOp) {
+  String _renderInline(DeltaInsertOp op, DeltaInsertOp contextOp) {
     if (op.isCustomEmbed()) {
       return _renderCustom(op, contextOp);
     }
@@ -295,7 +294,7 @@ class QuillDeltaToHtmlConverter {
     return converter.getHtml().replaceAll('\n', brTag);
   }
 
-  String _renderCustom(DeltaInsertOp op, DeltaInsertOp? contextOp) {
+  String _renderCustom(DeltaInsertOp op, DeltaInsertOp contextOp) {
     return _renderCustomWithCallback?.call(op, contextOp) ?? '';
   }
 }
