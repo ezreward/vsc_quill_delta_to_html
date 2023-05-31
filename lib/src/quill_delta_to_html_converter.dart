@@ -175,11 +175,8 @@ class QuillDeltaToHtmlConverter {
     }).join('');
   }
 
-  Future<File> convertToPdfFile(List<dynamic> deltaJson, String filename,
-      bool kIsWeb, String tempTagertPath) async {
-    final converter = QuillDeltaToHtmlConverter(List.castFrom(deltaJson));
-    final html = converter.convert();
-
+  Future<File> convertToPdfFile(String filename, String tempTagertPath) async {
+    final html = convert();
     return await FlutterHtmlToPdf.convertFromHtmlContent(
         html, tempTagertPath, filename);
   }
