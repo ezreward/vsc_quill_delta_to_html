@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
+import 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
 import 'package:meta/meta.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vsc_quill_delta_to_html/src/delta_insert_op.dart';
 import 'package:vsc_quill_delta_to_html/src/funcs_html.dart';
 import 'package:vsc_quill_delta_to_html/src/grouper/group_types.dart';
@@ -169,6 +173,15 @@ class QuillDeltaToHtmlConverter {
       return _renderWithCallbacks(GroupType.inlineGroup, group,
           () => renderInlines((group as InlineGroup).ops, true));
     }).join('');
+  }
+
+  Future<File> convertToPdfFile(List<dynamic> deltaJson, String filename,
+      bool kIsWeb, String tempTagertPath) async {
+    final converter = QuillDeltaToHtmlConverter(List.castFrom(deltaJson));
+    final html = converter.convert();
+
+    return await FlutterHtmlToPdf.convertFromHtmlContent(
+        html, tempTagertPath, filename);
   }
 
   _renderWithCallbacks(

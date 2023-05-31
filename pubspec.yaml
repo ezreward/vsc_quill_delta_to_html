@@ -5,12 +5,14 @@ homepage: https://github.com/VisualSystemsCorp/vsc_quill_delta_to_html
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=2.10.3" 
 
 dependencies:
   collection:
   flutter_html_to_pdf: ^0.7.0
   html_unescape: ^2.0.0
   meta: ^1.7.0
+  path_provider: ^2.0.11
 
 dev_dependencies:
   lints: ^1.0.1
